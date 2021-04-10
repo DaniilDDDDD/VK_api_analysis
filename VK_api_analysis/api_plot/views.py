@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -15,6 +16,7 @@ from . import plots
 load_dotenv()
 
 
+@csrf_exempt
 def index(request):
     """Main page of web-service"""
     return render(request, 'index.html')
@@ -36,6 +38,7 @@ def index(request):
 #     return render(request, 'index.html')
 
 
+@csrf_exempt
 @api_view(['GET'])
 def send_to_auth(request):
     """
@@ -51,6 +54,7 @@ def send_to_auth(request):
     return redirect('https://oauth.vk.com/authorize', params=params)
 
 
+@csrf_exempt
 @api_view(['POST'])
 def wall(request, plot_type):
     """
@@ -65,17 +69,25 @@ def wall(request, plot_type):
         'access_token': request.data.get('access_token'),
         'v': os.environ.get('VK_API_VERSION'),
     }
-    response = requests.get(url, params=params).json()['response']
-    # making graph, saving is in file 'current_graph'
-    plots.wall_likes_comments_plot(response, plot_type)
+    try:
+        response = requests.get(url, params=params).json()['response']
+        # making graph, saving is in file 'current_graph'
+        plots.wall_likes_comments_plot(response, plot_type)
+    except KeyError:
+        pass
+
     graph_image = open('media/current_plot.jpeg', 'rb')
     response = HttpResponse(FileWrapper(graph_image), content_type='image/jpeg')
 
     return response
 
 
+@csrf_exempt
 @api_view(['POST'])
 def stats(request, plot_type):
+    """
+    Returns image of graph of statistics of user's community during given period of time
+    """
 
     url = 'https://api.vk.com/method/stats.get'
     params = {
@@ -87,9 +99,12 @@ def stats(request, plot_type):
         'access_token': request.data.get('access_token'),
         'v': os.environ.get('VK_API_VERSION'),
     }
+    try:
+        response = requests.get(url, params=params).json()['response']
+        plots.stats_plot(response, plot_type)
+    except KeyError:
+        pass
 
-    response = requests.get(url, params=params).json()['response']
-    plots.stats_plot(response, plot_type)
     graph_image = open('media/current_plot.jpeg', 'rb')
     response = HttpResponse(FileWrapper(graph_image), content_type='image/jpeg')
 

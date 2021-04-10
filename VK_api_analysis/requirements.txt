@@ -1,0 +1,10 @@
+Django
+django-cors-headers
+django-debug-toolbar
+django-filter
+djangorestframework
+djangorestframework-simplejwt
+matplotlib
+pandas
+python-dotenv==0.14.0
+requests

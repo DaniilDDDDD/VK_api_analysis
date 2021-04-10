@@ -5,7 +5,8 @@ import time
 
 def wall_likes_comments_plot(data, plot_type='line'):
     """
-    Parse response data of posts of a single user and make plot using it. Plot saves as 'current_plot.png'
+    Parse response data of posts of a single user and make plot using it
+    Plot saves as 'current_plot.png'
     """
 
     col_names = ['date', 'likes', 'comments', 'reposts']
@@ -28,6 +29,11 @@ def wall_likes_comments_plot(data, plot_type='line'):
 
 
 def stats_plot(data, plot_type='bar'):
+    """
+    Parse response data of statistics of a user's community and make plot using it.
+    Plot saves as 'current_plot.png'
+    """
+
     col_names = [
         'period',
         'views',
