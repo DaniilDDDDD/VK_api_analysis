@@ -56,6 +56,7 @@ def stats(request, plot_type):
     Returns image of graph of statistics
     of user's community during given period of time
     """
+    print(request.data)
 
     url = 'https://api.vk.com/method/stats.get'
     params = {
@@ -70,6 +71,7 @@ def stats(request, plot_type):
     }
     try:
         response = requests.get(url, params=params).json()
+        print(response)
         plots.stats_plot(response['response'], plot_type)
     except KeyError:
         pass
