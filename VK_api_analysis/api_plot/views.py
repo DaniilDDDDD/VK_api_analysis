@@ -30,7 +30,7 @@ def wall(request, plot_type):
         'count': request.data.get('count'),
         'filter': request.data.get('filter'),
         'access_token': request.data.get('access_token'),
-        'v': os.environ.get('VK_API_VERSION'),
+        'v': os.environ.get('VK_API_VERSION', default=5.86),
     }
     try:
         response = requests.get(url, params=params).json()
@@ -67,7 +67,7 @@ def stats(request, plot_type):
         'interval': request.data.get('interval', 'week'),
         'intervals_count': request.data.get('intervals_count', 5),
         'access_token': request.data.get('access_token'),
-        'v': os.environ.get('VK_API_VERSION'),
+        'v': os.environ.get('VK_API_VERSION', default=5.86),
     }
     try:
         response = requests.get(url, params=params).json()
