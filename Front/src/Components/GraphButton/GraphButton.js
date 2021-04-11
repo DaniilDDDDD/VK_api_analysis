@@ -7,21 +7,26 @@ const GraphButton = (props) => {
     };
     const postData = async (url, data) => {
         const res = await fetch(url, {
+            headers: {
+              'Content-Type': 'application/json'
+              // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
             method: 'POST',
             body: JSON.stringify(data),
         });
         return res.json();
     }
     const buildGraph = async() => {
-        await postData('http://localhost:8000/', props.plotType === 'wall' ? 
-                {owner_id: props.data.owner_id, offset: props.data.offset, count: props.data.count, filter: 'all', access_token: props.data.accessCode} : 
-                {group_id: props.data.group_id, app_id: props.data.app_id, timestamp_from: props.data.from, timestamp_to: props.data.to, interval: props.data.interval, access_token: props.data.accessCode}
-        ).then(data => props.setGraph(data))
+        console.log(props.data)
+        await postData(`http://localhost:8000/${props.sourceType}/${props.plotType}/`, props.sourceType === 'wall' ?
+                {owner_id: [String(props.data.owner)], offset: [String(props.data.offset)], count: [String(props.data.count)], filter: ['all'], access_token: [String(props.data.accessCode)]} :
+                {group_id: [String(props.data.group_id)], app_id: [String(props.data.app_id)], timestamp_from: [String(props.data.from)], timestamp_to: [String(props.data.to)], interval: [String(props.data.interval)], access_token: [props.data.accessCode]}
+        ).then(data => props.setGraph(data.image))
 
     }
     const buttonOnClick = () => {
-        props.data.accessCode === '' ? setIsEmpty(true) : setIsEmpty(false)
         isEmpty === true ? handleRedirect() : buildGraph()
+        props.data.accessCode === '' ? setIsEmpty(true) : setIsEmpty(false)
     }
     return (
         <button onClick={buttonOnClick} className={props.styleProp}>

@@ -63,6 +63,7 @@ def wall(request, plot_type):
     Returns image of graph of number
     of likes and comments dependency of time
     """
+
     url = 'https://api.vk.com/method/wall.get'
     params = {
         'owner_id': request.data.get('owner_id'),
@@ -76,12 +77,13 @@ def wall(request, plot_type):
         response = requests.get(url, params=params).json()['response']
         # making graph, saving is in file 'current_graph'
         plots.wall_likes_comments_plot(response, plot_type)
+
     except KeyError:
         pass
 
     graph_image = open('media/current_plot.jpeg', 'rb')
     data = {
-        'image': base64.encodebytes(graph_image.read()).decode('utf-8')
+        'image': 'data:image/png;base64,' + base64.encodebytes(graph_image.read()).decode('utf-8')
     }
 
     return Response(data=data, status=status.HTTP_200_OK)
