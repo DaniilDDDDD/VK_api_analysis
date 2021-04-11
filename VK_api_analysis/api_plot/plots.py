@@ -50,10 +50,9 @@ def stats_plot(data, plot_type='bar'):
             'subscribed': 0,
             'unsubscribed': 0
         }
-        activities = data.get('activity', default)
+        activities = d.get('activity', default)
         item = [
-            f'From {time.ctime(d["period_from"])[4:]} '
-            f'to {time.ctime(d["period_to"])[4:]}',
+            f'From {time.ctime(d["period_from"])[4:]}',
             d['visitors']['views'],
             d['visitors']['visitors'],
             activities.get('likes', 0),

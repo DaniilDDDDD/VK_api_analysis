@@ -5,7 +5,7 @@ const Header = () => {
         <div className="bg-blue-200 w-screen h-16">
             <div className="flex justify-between">
                 <p className="font-normal ml-8 mt-3 text-2xl">
-                    Даниил Панюшин
+                    Daniil Panyushin
                 </p>
                 <div className="flex">
                     <a href="https://github.com/DaniilDDDDD">
