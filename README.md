@@ -5,7 +5,7 @@ This project displays on the web page a graph of the data received from the VK_a
 - By selecting a "Wall", you will display a graph built according to data from the page
  of the user whose ID is entered in the field "owner_id"
 - By selecting a "Stats", you will display a graph built according to data from community page,
-the administrator of which is the owner of the token.
+the administrator of which is the owner of the token. This option available only for users with their own community.
 The community ID must be entered in the "group_id' field,
 and the application ID must be entered in the "app_id" field.
 In fields "timestamp_from" and "timestamp_to" you need to insert period of time for which the data will be analyzed.
