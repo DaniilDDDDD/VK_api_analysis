@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
-from wsgiref.util import FileWrapper
+from rest_framework import status
+
+import base64
+
+from rest_framework.response import Response
 
 import requests
 import os
@@ -40,7 +43,8 @@ def index(request):
 @api_view(['GET'])
 def send_to_auth(request):
     """
-    This method sends user to get permanent access token that is necessary to use VK_api
+    This method sends user to get permanent access token
+    that is necessary to use VK_api
     """
 
     params = {
@@ -56,7 +60,8 @@ def send_to_auth(request):
 @api_view(['POST'])
 def wall(request, plot_type):
     """
-    Returns image of graph of number of likes and comments dependency of time
+    Returns image of graph of number
+    of likes and comments dependency of time
     """
     url = 'https://api.vk.com/method/wall.get'
     params = {
@@ -75,22 +80,25 @@ def wall(request, plot_type):
         pass
 
     graph_image = open('media/current_plot.jpeg', 'rb')
-    response = HttpResponse(FileWrapper(graph_image), content_type='image/jpeg')
+    data = {
+        'image': base64.encodebytes(graph_image.read()).decode('utf-8')
+    }
 
-    return response
+    return Response(data=data, status=status.HTTP_200_OK)
 
 
 @csrf_exempt
 @api_view(['POST'])
 def stats(request, plot_type):
     """
-    Returns image of graph of statistics of user's community during given period of time
+    Returns image of graph of statistics
+    of user's community during given period of time
     """
 
     url = 'https://api.vk.com/method/stats.get'
     params = {
-        'group_id': request.data.get('group_id'),  # works only with current user's communities
-        'app_id': request.data.get('app_id'),  # receiving app_id from request because of feature of VK_api
+        'group_id': request.data.get('group_id'),
+        'app_id': request.data.get('app_id'),
         'timestamp_from': request.data.get('timestamp_from'),
         'timestamp_to': request.data.get('timestamp_to'),
         'interval': request.data.get('interval'),
@@ -104,6 +112,8 @@ def stats(request, plot_type):
         pass
 
     graph_image = open('media/current_plot.jpeg', 'rb')
-    response = HttpResponse(FileWrapper(graph_image), content_type='image/jpeg')
+    data = {
+        'image': base64.encodebytes(graph_image.read()).decode('utf-8')
+    }
 
-    return response
+    return Response(data=data, status=status.HTTP_200_OK)
