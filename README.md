@@ -20,8 +20,8 @@ to "access_token" field.
 ### Launch of the project:
 To start this app, you need to:
 - Clone project from https://github.com/DaniilDDDDD/VK_api_analysis.git
-- Go to the root directory of the project
-- Create python virtual environment and activate it
+- Go to the VK_api_analysis\VK_api_analysis directory of the project
+- Activate python virtual environment and execute ```pip install -r requirements.txt```
 - Execute ```python manage.py migrate``` then ```python manage.py runserver```
 - Open node.js command prompt in the VK_api_analysis\Front directory, execute ```npm i``` and then ```npm start```
 - App would be started on 8000 (backend) and 3000 (front) ports
