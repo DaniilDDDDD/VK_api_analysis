@@ -76,3 +76,14 @@ def stats_plot(data, plot_type='bar'):
     )
     plt.tight_layout()
     plt.savefig('media/current_plot.jpeg', dpi=225)
+
+
+def posts_analisis(data):
+
+
+    # сюда запиши результаты анализа в json формате
+    result = {
+
+    }
+
+    return result

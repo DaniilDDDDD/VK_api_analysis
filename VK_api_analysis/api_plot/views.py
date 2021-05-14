@@ -81,3 +81,31 @@ def stats(request, plot_type):
     }
 
     return Response(data=data, status=status.HTTP_200_OK)
+
+
+@csrf_exempt
+@api_view(['POST'])
+def tag(request):
+    """
+        Returns json of graph of statistics
+        of user's community during given period of time
+        """
+
+    url = 'https://api.vk.com/method/wall.get'
+
+    params = {
+        'owner_id': request.data.get('owner_id'),
+        'offset': request.data.get('offset'),
+        'count': request.data.get('count'),
+        'filter': request.data.get('filter'),
+        'access_token': request.data.get('access_token'),
+        'v': os.environ.get('VK_API_VERSION', default=5.86),
+    }
+    try:
+        response = requests.get(url, params=params).json()
+    except KeyError:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    result = plots.posts_analisis(response['response'])
+
+    return Response(data=result, status=status.HTTP_200_OK)
