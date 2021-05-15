@@ -13,11 +13,12 @@ const GraphButton = (props) => {
         return res.json();
     }
     const buildGraph = async() => {
-        await postData(`http://localhost:8000/${props.sourceType}/${props.plotType}/`, props.sourceType === 'wall' ?
+        props.plotType !== 'tags' ? await postData(`http://localhost:8000/${props.sourceType}/${props.plotType}/`, props.sourceType === 'wall' ?
                 {owner_id: [String(props.data.owner)], offset: [String(props.data.offset)], count: [String(props.data.count)], filter: ['all'], access_token: [String(props.data.accessCode)]} :
                 {group_id: [String(props.data.group)], app_id: [String(props.data.app)], timestamp_from: [String(props.data.from)], timestamp_to: [String(props.data.to)], interval: [String(props.data.interval)],intervals_count: [String(props.data.intervalsCount)], access_token: [props.data.accessCode]}
         ).then(data => props.setGraph(data.image))
-
+        : await postData(`http://localhost:8000/tag/`, {owner_id: [String(props.data.owner)], offset: [String(props.data.offset)], count: [String(props.data.count)], filter: ['all'], access_token: [String(props.data.accessCode)]})
+        .then(data => props.setGraph(data))
     }
     const buttonOnClick = () => {
         buildGraph()

@@ -69,6 +69,7 @@ const Graph = () => {
                         <option value="line">
                             Line
                         </option>
+                        {sourceType === 'wall' ? <option value="tags">Tags</option> : null}
                     </select>
                     <select onChange={sourceOnChange} id="plot" className="float-right w-28 mt-3 mr-2 border-2 rounded-md outline-none border-blue-300 bg-blue-100">
                         <option selected="selected" value="wall">
@@ -80,7 +81,7 @@ const Graph = () => {
                     </select>
                 </div>
                 <div className="h-96 w-120 mx-auto border-2 border-blue-200 overflow-hidden">
-                    {graph !== '' ? <img className="h-96 w-120" src={graph} alt="graph"/> : null}
+                    {Array.isArray(graph) ? graph.map(item => <p>item.hash_tag: item.likes</p>) : graph !== '' ? <img className="h-96 w-120" src={graph} alt="graph"/> : null}
                 </div>
                 <div className="mx-auto h-40 w-120 border-2 border-t-0 bg-blue-200 border-blue-200">
                     {sourceType === 'wall' ? <div>
